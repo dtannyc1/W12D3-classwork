@@ -18,7 +18,7 @@ require "action_view/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module AuthenticateMeLongPractice
+module AuthenticateMe
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
@@ -34,12 +34,22 @@ module AuthenticateMeLongPractice
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
-    config.api_only = true
-
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, 
-      key: '_auth_me_session', 
-      same_site: :lax, 
-      secure: Rails.env.production?
+    config.middleware.use ActionDispatch::Session::CookieStore,
+        key: '_auth_me_session',
+        same_site: :lax,
+        secure: Rails.env.production?
+    config.api_only = true
   end
 end
+
+# module Backend
+#     class Application < Rails::Application
+#       # ...
+#       config.middleware.use ActionDispatch::Cookies
+#       config.middleware.use ActionDispatch::Session::CookieStore,
+#         key: '_auth_me_session',
+#         same_site: :lax,
+#         secure: Rails.env.production?
+#     end
+#   end
