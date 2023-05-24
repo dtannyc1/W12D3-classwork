@@ -1,4 +1,5 @@
 .byebug_history
 
 /public
-config/master.key
+
+/config/master.key
