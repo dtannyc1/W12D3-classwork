@@ -1,6 +1,6 @@
 import csrfFetch from "./csrf";
 
-// actions
+// action types
 export const RECEIVE_USER = 'RECEIVE_USER'
 export const REMOVE_USER = 'REMOVE_USER'
 
@@ -21,15 +21,24 @@ export const removeUser = userId => {
 
 // Thunk action creators
 export const loginUser = user => async dispatch => {
-    let res = await csrfFetch('/api/session', {
-        method: "POST",
-        body: JSON.stringify(user)
-    })
+    try {
+        let res = await csrfFetch('/api/session', {
+            method: "POST",
+            body: JSON.stringify(user)
+        })
 
-    if (res.ok) {
-        let data = await res.json()
-        sessionStorage.setItem('currentUser', JSON.stringify(data.user))
-        dispatch(receiveUser(data.user))
+        if (res.ok) {
+            let data = await res.json()
+            if (data.errors) throw data
+            // sessionStorage.setItem('currentUser', JSON.stringify(data.user))
+            storeCurrentUser(data.user)
+            dispatch(receiveUser(data.user))
+        } else {
+            throw res
+        }
+    } catch (error) {
+        let errors = await error.json()
+        throw errors
     }
 }
 
@@ -57,8 +66,33 @@ export const createUser = user => async dispatch => {
     }
 }
 
+export const restoreSession = () => async dispatch => {
+    let res = await csrfFetch('/api/session');
+    if (res.ok) {
+        storeCSRFToken(res);
+        let data = await res.json();
+        storeCurrentUser(data.user);
+        dispatch(receiveUser(data.user))
+    }
+}
+
+// Helper Functions
+const storeCurrentUser = user => {
+    if (user){
+        sessionStorage.setItem('currentUser', JSON.stringify(user))
+    } else {
+        sessionStorage.removeItem('currentUser')
+    }
+}
+
+const storeCSRFToken = response => {
+    const csrfToken = response.headers.get("X-CSRF-Token");
+    if (csrfToken) sessionStorage.setItem("X-CSRF-Token", csrfToken);
+}
+
 // Reducer
-const sessionReducer = (state, action) => {
+const initialState = {user: JSON.parse(sessionStorage.getItem('currentUser'))}
+const sessionReducer = (state = initialState, action) => {
     let nextState = {...state}
     switch (action.type) {
         case RECEIVE_USER:
