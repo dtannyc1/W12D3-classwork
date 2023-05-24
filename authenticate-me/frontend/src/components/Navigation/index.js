@@ -1,11 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../../store/session";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Navigation.css"
 import ProfileButton from "./ProfileButton";
 
 const Navigation = props => {
-    const dispatch = useDispatch();
     const currentUser = useSelector(state => state.session.user);
 
     return (
@@ -13,15 +11,7 @@ const Navigation = props => {
             <ul className="log-buttons">
                 {(currentUser) ?
                     <>
-                        <li>
-                            <ProfileButton/>
-                        </li>
-                        <li>
-                            <button onClick={ async e => {
-                                e.preventDefault();
-                                dispatch(logoutUser(currentUser.id))
-                            }}>Log Out!</button>
-                        </li>
+                        <ProfileButton/>
                     </>:
                     <>
                         <li>

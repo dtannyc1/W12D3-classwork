@@ -32,6 +32,7 @@ const SignupFormPage = props => {
                 {errors.map(err => {
                     return <div className="error" key={err}>{err}</div>
                 })}
+                <br/>
                 <label>Username: <br/>
                     <input type="input" value={username} onChange={e => setUsername(e.target.value)}/>
                 </label>
