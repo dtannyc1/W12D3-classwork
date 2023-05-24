@@ -1,11 +1,11 @@
-.login-form{
+.error {
+    color: red;
+}
+
+.signup-form{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
     text-align: center;
-}
-
-.error {
-    color: red;
 }

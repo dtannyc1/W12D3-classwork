@@ -36,13 +36,13 @@ const LoginFormPage = props => {
                 <br/>
                 <label>Username or Email: <br/>
                     <input type="text" value={credential} onChange={e => setCredential(e.target.value)}/>
-                    <br/>
                 </label>
+
                 <br/>
                 <label>Password: <br/>
                     <input type="password" value={password} onChange={e => setPassword(e.target.value)}/>
-                    <br/>
                 </label>
+
                 <br/>
                 <button>Login</button>
             </form>

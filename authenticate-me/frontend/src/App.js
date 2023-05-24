@@ -3,6 +3,9 @@ import { Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "./store/session";
+import SignupFormPage from "./components/SignupFormPage";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import Navigation from "./components/Navigation";
 
 function App() {
     const dispatch = useDispatch();
@@ -10,22 +13,15 @@ function App() {
 
     return (
         <>
-            <h1>Hello from App</h1>
-            <Route exact path="/">
-                {(currentUser) ?
-                    <>
-                        <button onClick={ async e => {
-                            e.preventDefault();
-                            dispatch(logoutUser(currentUser.id))
-                        }}>Log Out!</button>
-                    </> :
-                    <>
-                        <Link to="/login">Login!</Link>
-                    </>}
-
-            </Route>
+            <h1>Authenticate Me App</h1>
+            {/* <Route exact path="/"> */}
+                <Navigation/>
+            {/* </Route> */}
             <Route path="/login">
                 <LoginFormPage/>
+            </Route>
+            <Route path="/signup">
+                {(currentUser) ? <Redirect to="/"/> : <SignupFormPage/>}
             </Route>
         </>
     );

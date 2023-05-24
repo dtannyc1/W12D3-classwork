@@ -53,16 +53,22 @@ export const logoutUser = userId => async dispatch => {
     }
 }
 
-export const createUser = user => async dispatch => {
-    let res = await csrfFetch('/api/users', {
-        method: "POST",
-        body: JSON.stringify(user)
-    });
+export const signup = user => async dispatch => {
+    try{
+        let res = await csrfFetch('/api/users', {
+            method: "POST",
+            body: JSON.stringify(user)
+        });
 
-    if (res.ok) {
-        let data = res.json();
-        sessionStorage.setItem('currentUser', JSON.stringify(data.user));
-        dispatch(receiveUser(data.user));
+        if (res.ok) {
+            let data = await res.json();
+            if (data.errors) throw data
+            storeCurrentUser(data.user);
+            dispatch(receiveUser(data.user));
+        }
+    } catch(error) {
+        let errors = await error.json();
+        throw errors
     }
 }
 
