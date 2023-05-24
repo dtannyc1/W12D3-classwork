@@ -9,7 +9,7 @@ const ProfileButton = props => {
     const [showMenu, setShowMenu] = useState(false);
 
     const openMenu = () => {
-        console.log("opened")
+        if (showMenu) return;
         setShowMenu(true)
     }
 

@@ -2990,3 +2990,27 @@ Processing by Api::SessionsController#destroy as JSON
 Completed 200 OK in 58ms (Views: 0.4ms | ActiveRecord: 8.1ms | Allocations: 5481)
 
 
+Started POST "/api/session" for 127.0.0.1 at 2023-05-24 17:09:41 -0400
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"credential"=>"david", "password"=>"[FILTERED]", "session"=>{"credential"=>"david", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "david"], ["LIMIT", 1]]
+  ↳ app/models/user.rb:16:in `find_by_credentials'
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."session_token" = $1 LIMIT $2[0m  [["session_token", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/models/user.rb:37:in `generate_unique_session_token'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/user.rb:28:in `reset_session_token!'
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "david"], ["id", 13], ["LIMIT", 1]]
+  ↳ app/models/user.rb:28:in `reset_session_token!'
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["email", "david@gmail.com"], ["id", 13], ["LIMIT", 1]]
+  ↳ app/models/user.rb:28:in `reset_session_token!'
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."session_token" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["session_token", "[FILTERED]"], ["id", 13], ["LIMIT", 1]]
+  ↳ app/models/user.rb:28:in `reset_session_token!'
+  [1m[36mUser Update (0.7ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "[FILTERED]"], ["updated_at", "2023-05-24 21:09:41.815454"], ["id", 13]]
+  ↳ app/models/user.rb:28:in `reset_session_token!'
+  [1m[36mTRANSACTION (10.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/user.rb:28:in `reset_session_token!'
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/show.json.jbuilder (Duration: 0.6ms | Allocations: 176)
+Completed 200 OK in 427ms (Views: 1.7ms | ActiveRecord: 15.3ms | Allocations: 5756)
+
+
