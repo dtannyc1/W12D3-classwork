@@ -15,7 +15,6 @@ const ProfileButton = props => {
 
     useEffect(() => {
         const closeMenu = () => {
-            console.log("closed")
             setShowMenu(false)
         }
 
