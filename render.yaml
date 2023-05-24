@@ -1,6 +1,6 @@
 databases:
   - name: authenticate-me
-    user: authenticateMe
+    user: authenticate-me
     plan: free
     region: ohio
 
